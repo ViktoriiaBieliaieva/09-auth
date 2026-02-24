@@ -55,7 +55,9 @@ export default function NotesClientByTag({ tag }: NotesClientByTagProps) {
         {data && data.totalPages > 1 && (
           <Pagination totalPages={data.totalPages} setPage={setPage} page={page} />
         )}
-        <Link href="/notes/action/create">Create note +</Link>
+        <Link href="/notes/action/create" className={css.button}>
+          Create note +
+        </Link>
       </header>
       {isLoading && <Loading />}
 
