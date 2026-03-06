@@ -1,5 +1,5 @@
 // app/notes/filter/[...slug]/page.tsx
-import { fetchNotes } from '@/lib/api';
+import { fetchServerNotes } from '@/lib/api/serverApi';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import NotesClient from './Notes.client';
 import { NoteTag } from '@/types/note';
@@ -44,7 +44,8 @@ export default async function NotesByTag({ params }: NotesByTagProps) {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ['notes', '', 1, tag],
-    queryFn: () => (tag === 'all' ? fetchNotes('', 1) : fetchNotes('', 1, tag as NoteTag)),
+    queryFn: () =>
+      tag === 'all' ? fetchServerNotes('', 1) : fetchServerNotes('', 1, tag as NoteTag),
   });
 
   return (
