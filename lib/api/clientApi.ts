@@ -1,6 +1,6 @@
 import Note, { NewNoteData, NoteId, NoteTag } from '@/types/note';
 import { nextServer } from './api';
-import { User, UserUpdate } from '@/types/user';
+import { User } from '@/types/user';
 
 interface FetchNotesResponse {
   notes: Note[];
@@ -71,6 +71,10 @@ export async function getMe(): Promise<User> {
 export const logout = async (): Promise<void> => {
   await nextServer.post('/auth/logout');
 };
+
+interface UserUpdate {
+  username: string;
+}
 
 export async function updateMe(user: UserUpdate): Promise<User> {
   const { data } = await nextServer.patch<User>('/users/me', user);

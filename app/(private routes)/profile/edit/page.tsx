@@ -6,9 +6,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getMe, updateMe } from '@/lib/api/clientApi';
 import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
+import { useAuthStore } from '@/lib/store/authStore';
 
 export default function EditProfilePage() {
   const router = useRouter();
+  const setUser = useAuthStore(state => state.setUser);
   const { data: user } = useQuery({
     queryKey: ['me'],
     queryFn: getMe,
@@ -22,9 +24,10 @@ export default function EditProfilePage() {
 
   const { mutate } = useMutation({
     mutationFn: updateMe,
-    onSuccess: () => {
+    onSuccess: updatedUser => {
       toast.success('Profile updated');
       queryClient.invalidateQueries({ queryKey: ['me'] });
+      setUser(updatedUser);
       router.push('/profile');
     },
     onError: () => {
